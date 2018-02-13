@@ -6,4 +6,6 @@
     <string name="michaela">Michaela</string>
     <string name="elle">Elle</string>
     <string name="schedule">Schedule</string>
+    <string name="google_maps_key">play-services-maps</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

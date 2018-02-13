@@ -1,5 +1,6 @@
 package edu.samibialozynski2washcoll.thesis2018;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
                 schedule = findViewById(R.id.samiSchedule);
                 schedule.setText(getSchedule());
+
+                startActivity(new Intent(MainActivity.this, MapsActivity.class));
             }
         });
 
@@ -112,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         }catch (IOException e){
             Log.d("Error", "someOtherMethod()");
         }
-
+   
         return classes.text();
     }
 }
