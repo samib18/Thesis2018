@@ -25,21 +25,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -48,7 +37,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         extra = getIntent().getStringArrayListExtra("extra");
 
         List<List<String>> partitions = new ArrayList<>();
-
 
         for(int i = 0; i < extra.size(); i += 4)
         {
@@ -74,18 +62,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 if (list.get(i).contains("Cain")) {
                     LatLng cain = new LatLng(39.216425, -76.070214);
-                    mMap.addMarker(new MarkerOptions().position(cain).title(list.toString()));
+                    mMap.addMarker(new MarkerOptions().position(cain).title(list.get(i)));
+                }
+
+                if (list.get(i).contains("Toll")) {
+                    LatLng toll = new LatLng(39.215652, -76.068342);
+                    mMap.addMarker(new MarkerOptions().position(toll).title(list.get(i)));
+                }
+
+                if (list.get(i).contains("Smith")) {
+                    LatLng smith = new LatLng(39.216851, -76.068505);
+                    mMap.addMarker(new MarkerOptions().position(smith).title(list.get(i)));
+                }
+
+                if (list.get(i).contains("Daly")) {
+                    LatLng daly = new LatLng(39.217221, -76.069455);
+                    mMap.addMarker(new MarkerOptions().position(daly).title(list.get(i)));
+                }
+
+                if (list.get(i).contains("Gibson")) {
+                    LatLng gibson = new LatLng(39.217591, -76.069771);
+                    mMap.addMarker(new MarkerOptions().position(gibson).title(list.get(i)));
+                }
+
+                if (list.get(i).contains("Cromwell")) {
+                    LatLng cromwell = new LatLng(39.214669, -76.065894);
+                    mMap.addMarker(new MarkerOptions().position(cromwell).title(list.get(i)));
+                }
+
+                if (list.get(i).contains("Studio Art")) {
+                    LatLng studioArt = new LatLng(39.220097, -76.068745);
+                    mMap.addMarker(new MarkerOptions().position(studioArt).title(list.get(i)));
+                }
+
+                if (list.get(i).contains("Swim Center")) {
+                    LatLng swimCenter = new LatLng(39.216891, -76.070596);
+                    mMap.addMarker(new MarkerOptions().position(swimCenter).title(list.get(i)));
+                }
+
+                if (list.get(i).contains("Boathouse")) {
+                    LatLng boathouse = new LatLng(39.204314, -76.067570);
+                    mMap.addMarker(new MarkerOptions().position(boathouse).title(list.get(i)));
                 }
             }
         }
 
         Log.d("Error", partitions.toString());
 
-
         LatLng wac = new LatLng(39.2176, -76.0678);
         CameraPosition position = CameraPosition.builder()
                 .target(wac)
-                .zoom(17f)
+                .zoom(16f)
                 .bearing(0.0f)
                 .tilt(0.0f)
                 .build();

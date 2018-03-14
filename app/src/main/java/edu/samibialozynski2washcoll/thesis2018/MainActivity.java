@@ -1,6 +1,5 @@
 package edu.samibialozynski2washcoll.thesis2018;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView schedule;
+    static TextView schedule;
     Button sami;
     Button elle;
     Button court;
@@ -42,10 +41,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 schedule = findViewById(R.id.samiSchedule);
+                String data = null;
+                new Signin.DataGrabber().execute();
 
-                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+
+                /*Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                 intent.putExtra("extra", getSchedule());
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
 
