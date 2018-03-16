@@ -34,8 +34,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Schedule"></activity>
-
         <activity android:name=".MapMarkers">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

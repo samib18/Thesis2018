@@ -14,7 +14,7 @@ import java.util.Map;
  * Created by samibialozynski on 3/15/18.
  */
 
-public class MapMarkers extends FragmentActivity {
+public class MapMarkers extends FragmentActivity  {
 
     ArrayList<String> extra;
     Building [] buildings = {

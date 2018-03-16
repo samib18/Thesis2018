@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class Signin {
 
-    final static String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0";
+    final static String USER_AGENT = "Mozilla/5.0";
     static String loginFormUrl = "https://colleague-ss.washcoll.edu/Student/Account/Login?ReturnUrl=%2fStudent%2f";
     static String loginActionUrl = "https://colleague-ss.washcoll.edu/Student/Account/Login?ReturnUrl=%2fStudent%2f";
     static String afterloginURL = "https://colleague-ss.washcoll.edu/Student/Planning/DegreePlans";
@@ -62,7 +62,6 @@ public class Signin {
                         .execute();
 
                 Connection.Response schedule = Jsoup
-
                         .connect(afterloginURL)
                         .cookies(homePage.cookies())
                         .method(Connection.Method.GET)

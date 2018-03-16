@@ -21,17 +21,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     GoogleMap mMap;
     ArrayList<String> extra;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-    }
     Building [] buildings = {
             new Building("Dunning", 39.215924, -76.068073, 0),
             new Building("JFC", 39.215816, -76.070777, 0),
@@ -46,6 +35,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             new Building("Boathouse", 39.204314, -76.067570, 0)
 
     };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_maps);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+    }
 
     public List<List<String>> splitData(){
 
@@ -83,19 +83,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //Splits meeting location to only use building
                 String buildingName = meetingLocation.split(" ")[0];
                 Building buildingData = buildingMap.get(buildingName);
-
-                if(buildingData.count > 0) {
-                    allData.put(new LatLng(buildingData.lat + l * buildingData.count, buildingData.lon + l * buildingData.count), stringList);
-                }else{
-                    allData.put(new LatLng(buildingData.lat, buildingData.lon), stringList);
+                if(buildingData != null){
+                    if(buildingData.count > 0) {
+                        allData.put(new LatLng(buildingData.lat + l * buildingData.count, buildingData.lon + l * buildingData.count), stringList);
+                    }else{
+                        allData.put(new LatLng(buildingData.lat, buildingData.lon), stringList);
+                    }
+                    buildingData.count ++;
+                } else {
+                    Log.e("Error", "Building not found: " + buildingData);
                 }
 
-                buildingData.count ++;
             }
         }
-
-        Log.e("Error", allData.toString());
-
         return allData;
     }
 
@@ -103,14 +103,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        MapMarkers mapMarkers = new MapMarkers();
-
         MarkerOptions markerOptions = new MarkerOptions();
         for(Map.Entry<LatLng, List> data : addlatlong().entrySet()){
             markerOptions.position(data.getKey());
             markerOptions.title(data.getValue().toString());
             mMap.addMarker(markerOptions);
-
         }
 
         LatLng wac = new LatLng(39.2176, -76.0678);
