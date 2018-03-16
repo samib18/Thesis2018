@@ -13,11 +13,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    GoogleMap mMap;
     ArrayList<String> extra;
 
     @Override
@@ -28,11 +30,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-    }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+    }
+    Building [] buildings = {
+            new Building("Dunning", 39.215924, -76.068073, 0),
+            new Building("JFC", 39.215816, -76.070777, 0),
+            new Building("Cain", 39.216425, -76.070214, 0),
+            new Building("Toll", 39.215652, -76.068342, 0),
+            new Building("Smith", 39.216851, -76.068505, 0),
+            new Building("Daly", 39.217221, -76.069455, 0),
+            new Building("Gibson", 39.217591, -76.069771, 0),
+            new Building("Cromwell", 39.214669, -76.065894, 0),
+            new Building("Studio Art", 39.220097, -76.068745, 0),
+            new Building("Swim Center", 39.216891, -76.070596, 0),
+            new Building("Boathouse", 39.204314, -76.067570, 0)
+
+    };
+
+    public List<List<String>> splitData(){
 
         extra = getIntent().getStringArrayListExtra("extra");
 
@@ -46,68 +61,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 partitions.add(extra.subList(i, Math.min(i + 4, extra.size())));;
             }
         }
+        return partitions;
+    }
 
-        for (List<String> list : partitions)
-        {
-            for(int i = 0; i < list.size(); i++) {
-                if (list.get(i).contains("Dunning")) {
-                    LatLng dunning = new LatLng(39.215924, -76.068073);
-                    mMap.addMarker(new MarkerOptions().position(dunning).title(list.get(i)));
+    public Map<LatLng, List> addlatlong(){
+        double l = 0.00005;
+        Map<LatLng, List> allData = new HashMap<>();
+
+        Map<String, Building> buildingMap = new HashMap<>();
+        for(int i = 0; i < buildings.length; i++){
+            buildingMap.put(buildings[i].name, buildings[i]);
+        }
+
+        //Processing the list classes in the schedule
+        for (List<String> stringList : splitData()) {
+            //To check the size of each class in the schedule is of size 4
+            if (stringList.size() == 4) {
+                // Meeting location is stored in 4th position
+                //Building name and room
+                String meetingLocation = stringList.get(3);
+                //Splits meeting location to only use building
+                String buildingName = meetingLocation.split(" ")[0];
+                Building buildingData = buildingMap.get(buildingName);
+
+                if(buildingData.count > 0) {
+                    allData.put(new LatLng(buildingData.lat + l * buildingData.count, buildingData.lon + l * buildingData.count), stringList);
+                }else{
+                    allData.put(new LatLng(buildingData.lat, buildingData.lon), stringList);
                 }
 
-                if (list.get(i).contains("JFC")) {
-                    LatLng jfc = new LatLng(39.215816, -76.070777);
-                    mMap.addMarker(new MarkerOptions().position(jfc).title(list.get(i)));
-                }
-
-                if (list.get(i).contains("Cain")) {
-                    LatLng cain = new LatLng(39.216425, -76.070214);
-                    mMap.addMarker(new MarkerOptions().position(cain).title(list.get(i)));
-                }
-
-                if (list.get(i).contains("Toll")) {
-                    LatLng toll = new LatLng(39.215652, -76.068342);
-                    mMap.addMarker(new MarkerOptions().position(toll).title(list.get(i)));
-                }
-
-                if (list.get(i).contains("Smith")) {
-                    LatLng smith = new LatLng(39.216851, -76.068505);
-                    mMap.addMarker(new MarkerOptions().position(smith).title(list.get(i)));
-                }
-
-                if (list.get(i).contains("Daly")) {
-                    LatLng daly = new LatLng(39.217221, -76.069455);
-                    mMap.addMarker(new MarkerOptions().position(daly).title(list.get(i)));
-                }
-
-                if (list.get(i).contains("Gibson")) {
-                    LatLng gibson = new LatLng(39.217591, -76.069771);
-                    mMap.addMarker(new MarkerOptions().position(gibson).title(list.get(i)));
-                }
-
-                if (list.get(i).contains("Cromwell")) {
-                    LatLng cromwell = new LatLng(39.214669, -76.065894);
-                    mMap.addMarker(new MarkerOptions().position(cromwell).title(list.get(i)));
-                }
-
-                if (list.get(i).contains("Studio Art")) {
-                    LatLng studioArt = new LatLng(39.220097, -76.068745);
-                    mMap.addMarker(new MarkerOptions().position(studioArt).title(list.get(i)));
-                }
-
-                if (list.get(i).contains("Swim Center")) {
-                    LatLng swimCenter = new LatLng(39.216891, -76.070596);
-                    mMap.addMarker(new MarkerOptions().position(swimCenter).title(list.get(i)));
-                }
-
-                if (list.get(i).contains("Boathouse")) {
-                    LatLng boathouse = new LatLng(39.204314, -76.067570);
-                    mMap.addMarker(new MarkerOptions().position(boathouse).title(list.get(i)));
-                }
+                buildingData.count ++;
             }
         }
 
-        Log.d("Error", partitions.toString());
+        Log.e("Error", allData.toString());
+
+        return allData;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        MapMarkers mapMarkers = new MapMarkers();
+
+        MarkerOptions markerOptions = new MarkerOptions();
+        for(Map.Entry<LatLng, List> data : addlatlong().entrySet()){
+            markerOptions.position(data.getKey());
+            markerOptions.title(data.getValue().toString());
+            mMap.addMarker(markerOptions);
+
+        }
 
         LatLng wac = new LatLng(39.2176, -76.0678);
         CameraPosition position = CameraPosition.builder()

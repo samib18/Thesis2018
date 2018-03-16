@@ -1,5 +1,6 @@
 package edu.samibialozynski2washcoll.thesis2018;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -41,13 +42,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 schedule = findViewById(R.id.samiSchedule);
-                String data = null;
-                new Signin.DataGrabber().execute();
+                //new Signin.DataGrabber().execute();
+
+                //getSchedule();
 
 
-                /*Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                 intent.putExtra("extra", getSchedule());
-                startActivity(intent);*/
+                startActivity(intent);
             }
         });
 
@@ -162,8 +164,11 @@ public class MainActivity extends AppCompatActivity {
             building = doc.select
                     ("span[data-bind=text: ko.utils.unwrapObservable(MeetingLocation)]");
             classType = doc.select
-                    ("div[aria-label=Meeting Location]");
+                    ("#planned-meetings-region > div > div:nth-child(2) > div:nth-child(3) > span:nth-child(4)");
 
+
+
+            MainActivity.schedule.setText(classType.text());
 
             String thesis = null;
 
