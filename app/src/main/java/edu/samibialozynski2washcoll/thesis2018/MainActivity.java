@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     Button liza;
     Button mich;
     Button sab;
+    String thesis = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,20 +122,7 @@ public class MainActivity extends AppCompatActivity {
         StringBuilder text = new StringBuilder();
 
         String classHtmlSection = null;
-        Elements classTitle = null;
-        Elements building = null;
-        Elements dayOfWeek = null;
-        Elements time = null;
-        Elements classType = null;
         Elements numberOfClasses = null;
-
-        ArrayList<String> data = new ArrayList<>();
-
-        ArrayList<String> classTitleS = new ArrayList<>();
-        ArrayList<String> dayOfWeekS = new ArrayList<>();
-        ArrayList<String> timeS = new ArrayList<>();
-        ArrayList<String> buildingS = new ArrayList<>();
-        ArrayList<String> classTypeS = new ArrayList<>();
 
         ArrayList<String> chunks = new ArrayList<>();
 
@@ -147,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
 
             Document doc = Jsoup.parse(classHtmlSection);
 
-
             numberOfClasses = doc.select("li[class=esg-card schedule-listitem]");
 
             for(Element elements : numberOfClasses){
@@ -155,18 +142,31 @@ public class MainActivity extends AppCompatActivity {
 
                     if(elements.text().contains("Senior Capstone Experience"))
                     {
-
+                        thesis = elements.text();
                     }else {
-                        if (elements.select("#planned-meetings-region > div > div:nth-child(2) > div:nth-child(3) > span:nth-child(4)").contains("Lab"))
+                        //If the class has a lab section
+                        if (elements.select("#planned-meetings-region > div > div:nth-child(2) > div:nth-child(3) > span:nth-child(4)")
+                                .text().contains("Lab"))
                         {
-                            chunks.add(elements.getElementsByClass("schedule-listitem-header-title" + " Lab").text());
+                            //Lecture details class name, DOW, time of day, Meeting location
+                            chunks.add(elements.getElementsByClass("schedule-listitem-header-title").text() + ": Lecture Details");
                             chunks.add(elements.select
-                                    ("span[data-bind=text: ko.utils.unwrapObservable(DaysOfWeek)]").text());
+                                    ("#planned-meetings-region > div > div:nth-child(1) > div:nth-child(1) > span:nth-child(2)").text());
                             chunks.add(elements.select
-                                    ("span[data-bind=text: ko.utils.unwrapObservable(FormattedTime)]").text());
+                                    ("#planned-meetings-region > div > div:nth-child(1) > div:nth-child(1) > span:nth-child(3)").text());
                             chunks.add(elements.select
-                                    ("span[data-bind=text: ko.utils.unwrapObservable(MeetingLocation)]").text());
+                                    ("#planned-meetings-region > div > div:nth-child(1) > div:nth-child(3) > span:nth-child(3)").text());
+
+                            //Lab details class name, DOW, time of day, Meeting location
+                            chunks.add(elements.getElementsByClass("schedule-listitem-header-title").text() + ": Lab Details");
+                            chunks.add(elements.select
+                                    ("#planned-meetings-region > div > div:nth-child(2) > div:nth-child(1) > span:nth-child(2)").text());
+                            chunks.add(elements.select
+                                    ("#planned-meetings-region > div > div:nth-child(2) > div:nth-child(1) > span:nth-child(3)").text());
+                            chunks.add(elements.select
+                                    ("#planned-meetings-region > div > div:nth-child(2) > div:nth-child(3) > span:nth-child(3)").text());
                         }else {
+                            //No lab section just normal class
                             chunks.add(elements.getElementsByClass("schedule-listitem-header-title").text());
                             chunks.add(elements.select
                                     ("span[data-bind=text: ko.utils.unwrapObservable(DaysOfWeek)]").text());
@@ -179,53 +179,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            /*classTitle = doc.getElementsByClass("schedule-listitem-header-title");
-            dayOfWeek = doc.select
-                    ("span[data-bind=text: ko.utils.unwrapObservable(DaysOfWeek)]");
-            time  = doc.select
-                    ("span[data-bind=text: ko.utils.unwrapObservable(FormattedTime)]");
-            building = doc.select
-                    ("span[data-bind=text: ko.utils.unwrapObservable(MeetingLocation)]");
-            classType = doc.select
-                    ("#planned-meetings-region > div > div:nth-child(2) > div:nth-child(3) > span:nth-child(4)");
-
-
-            String thesis = null;
-
-            for(Element element : classTitle) {
-                if (element.text().contains("Senior Capstone Experience")) {
-                    thesis = element.text();
-
-                }else if(!element.text().contains("Senior Capstone Experience")) {
-
-                    classTitleS.add(element.text());
-                }
-            }
-
-            for(Element element2 : dayOfWeek) {
-                dayOfWeekS.add(element2.text());
-            }
-
-            for(Element element3 : building) {
-                buildingS.add(element3.text());
-            }
-
-            for(Element element4 : time){
-                timeS.add(element4.text());
-            }
-
-            for(int i = 0; i < classTitleS.size(); i++){
-                data.add(classTitleS.get(i));
-                data.add(dayOfWeekS.get(i));
-                data.add(timeS.get(i));
-                data.add(buildingS.get(i));
-            }
-
-            data.add(thesis);*/
-
         }catch (IOException e){
-            Log.d("Error", "someOtherMethod()");
+            Log.d("Error in getSchedule()", e.toString());
         }
+
+        Log.d("Error in getSchedule()", chunks.toString());
         return chunks;
     }
 }

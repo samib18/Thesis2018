@@ -79,8 +79,7 @@ public class Signin {
 
 
             } catch (IOException e) {
-                Log.e("Error", "Ioexception");
-                e.printStackTrace();
+                Log.e("Error in doInBackgroud()", e.toString());
             }
             return null;
         }
