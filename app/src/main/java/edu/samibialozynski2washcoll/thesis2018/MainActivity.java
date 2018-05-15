@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     static TextView schedule;
     InputStream stream = null;
     Button sami;
-    Button elle;
     Button court;
     Button liza;
     Button mich;
@@ -37,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         sami = findViewById(R.id.samiButton);
-        elle = findViewById(R.id.elleButton);
         court = findViewById(R.id.courtButton);
         liza = findViewById(R.id.lizaButton);
         mich = findViewById(R.id.michButton);
@@ -52,17 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
                 stream = getResources().openRawResource(R.raw.samispringschedule);
 
-                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                intent.putExtra("extra", getSchedule());
-                startActivity(intent);
-            }
-        });
-
-        elle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                schedule = findViewById(R.id.samiSchedule);
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                 intent.putExtra("extra", getSchedule());
                 startActivity(intent);

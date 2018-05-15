@@ -42,12 +42,6 @@
             android:layout_height="wrap_content"
             android:text="@string/sab"/>
 
-        <Button
-            android:id="@+id/elleButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/elle"/>
-
          <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

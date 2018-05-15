@@ -26,6 +26,7 @@ public class Signin {
 
     static HashMap<String, String> cookies = new HashMap<>();
     static HashMap<String, String> formData = new HashMap<>();
+    static HashMap<String, String> emptycookies = new HashMap<>();
 
     public static class DataGrabber extends AsyncTask<Void, Void, Void> {
 
@@ -61,18 +62,20 @@ public class Signin {
                         .userAgent(USER_AGENT)
                         .execute();
 
-                Connection.Response schedule = Jsoup
+                cookies.putAll(homePage.cookies());
+
+                /*Connection.Response schedule = Jsoup
                         .connect(afterloginURL)
-                        .cookies(homePage.cookies())
+                        .cookies(cookies)
                         .method(Connection.Method.GET)
                         .userAgent(USER_AGENT)
-                        .execute();
+                        .execute();*/
 
                 doc = Jsoup
                         .connect(afterloginURL)
                         .header("Accept-Encoding","gzip, deflate, ")
                         .header("Content-Type", "text/html; charset=utf-8")
-                        .cookies(schedule.cookies())
+                        .cookies(cookies)
                         .maxBodySize(0)
                         .timeout(600000)
                         .get();
@@ -87,7 +90,7 @@ public class Signin {
         @Override
         protected void onPostExecute(Void result) {
 
-            MainActivity.schedule.setText(doc.text());
+            MainActivity.schedule.setText(doc.toString());
         }
     }
 

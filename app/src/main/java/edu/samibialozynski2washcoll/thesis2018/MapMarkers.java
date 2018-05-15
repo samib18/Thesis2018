@@ -1,9 +1,7 @@
 package edu.samibialozynski2washcoll.thesis2018;
 
 import android.util.Log;
-
 import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
